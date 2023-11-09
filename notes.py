@@ -1,16 +1,16 @@
 import pickle
 import os
 
-class NoteManager:
+class Note:
     def __init__(self, filename='notes.pkl'):
         self.filename = filename
         self.notes = self.load_notes()
 
-    def add_note(self, note):
+    def add(self, note):
         self.notes.append(note)
-        self.save_notes()
+        self.save()
 
-    def save_notes(self):
+    def save(self):
         with open(self.filename, 'wb') as f:
             pickle.dump(self.notes, f)
 
@@ -19,30 +19,26 @@ class NoteManager:
             with open(self.filename, 'rb') as f:
                 try:
                     return pickle.load(f)
-                except EOFError:  # Handle empty pickle file error
+                except EOFError:
                     return []
         return []
 
-    def show_notes(self):
+    def show(self):
         if not self.notes:
             print("No notes to show.")
         else:
             for index, note in enumerate(self.notes, start=1):
                 print(f"Note {index}: {note}")
 
-    def __str__(self):
-        return "\n".join(self.notes)
-
-
-note_manager = NoteManager()
+note = Note()
 
 while True:
-    command = input().strip().lower()  # Strip whitespace and convert to lower case for consistency
+    command = input(">>>").strip().lower()
     if command == 'note':
-        note = input("Enter your note: ") 
-        note_manager.add_note(note)
+        note_text = input("Enter your note: ") 
+        note.add(note_text)
         print("Note added.")
     elif command == 'note show':
-        note_manager.show_notes()
+        note.show()
     elif command == 'exit':
         break
