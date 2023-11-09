@@ -1,0 +1,34 @@
+Supported bot commands:
+
+add [name] [phone-1] [phone-2] ... [phone-n]
+ - Adds new contact record with name and phone number
+
+ birthday [name] [date]
+ - Adds birthday for contact. Format for date: DD-MM-YYYY
+
+ birthday [name]
+- Shows how many days till the contact's next birthday
+
+change [name] [old phone] [new phone]
+ - Changes phone number for contact
+
+delete [name] [phone-1] [phone-2] ... [phone-n]
+ - Deletes phone numbers for contact
+
+delete [name]
+ - Deletes contact by name
+
+phone [name]
+ - Shows phone numbers for contact
+
+search [term]
+ - Searches contacts by partial match of name or phone 
+
+show all
+ - Prints all contacts info
+
+good bye
+close
+exit
+stop
+ - Stops work and exits bot
