@@ -17,8 +17,15 @@ class NoteManager:
     def load_notes(self):
         if os.path.exists(self.filename):
             with open(self.filename, 'rb') as f:
-                return pickle.load(f)
+                try:
+                    return pickle.load(f)
+                except EOFError:
+                    return []
         return []
+
+    def show_notes(self):
+        for index, note in enumerate(self.notes, start=1):
+            print(f"Note {index}: {note}")
 
     def __str__(self):
         return "\n".join(self.notes)
