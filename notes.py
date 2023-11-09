@@ -30,7 +30,7 @@ class Note:
             for index, note in enumerate(self.notes, start=1):
                 print(f"Note {index}: {note}")
 
-def search(self, query):
+    def search(self, query):
         matches = [note for note in self.notes if query.lower() in note.lower()]
         if not matches:
             print("No matches found.")
