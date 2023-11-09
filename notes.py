@@ -19,13 +19,16 @@ class NoteManager:
             with open(self.filename, 'rb') as f:
                 try:
                     return pickle.load(f)
-                except EOFError:
+                except EOFError:  # Handle empty pickle file error
                     return []
         return []
 
     def show_notes(self):
-        for index, note in enumerate(self.notes, start=1):
-            print(f"Note {index}: {note}")
+        if not self.notes:
+            print("No notes to show.")
+        else:
+            for index, note in enumerate(self.notes, start=1):
+                print(f"Note {index}: {note}")
 
     def __str__(self):
         return "\n".join(self.notes)
@@ -34,10 +37,12 @@ class NoteManager:
 note_manager = NoteManager()
 
 while True:
-    command = input()
+    command = input().strip().lower()  # Strip whitespace and convert to lower case for consistency
     if command == 'note':
         note = input("Enter your note: ") 
         note_manager.add_note(note)
         print("Note added.")
+    elif command == 'note show':
+        note_manager.show_notes()
     elif command == 'exit':
-        break 
+        break
