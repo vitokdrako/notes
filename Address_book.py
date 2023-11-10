@@ -1,8 +1,10 @@
 import pickle
+import os
 from pathlib import Path
 from datetime import date, timedelta
 from functools import reduce
 from collections import UserDict
+
 
 class DuplicatedPhoneError(Exception):
     ...
@@ -202,3 +204,5 @@ class Note:
         else:
             for index, note in enumerate(matches, start=1):
                 print(f"Match {index}: {note}")
+    def __str__(self):
+        return "\n".join(self.notes)

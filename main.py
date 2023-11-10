@@ -159,15 +159,17 @@ COMMANDS = {
             birthday_handler: "birthday",
             show_all_handler: "show all",
             delete_handler: "delete",
-            note_add_handler: "note",
+            note_add_handler: "note add", 
             note_show_handler: "note show",
-            note_search_handler: "search note"
-            }
+            note_search_handler: "note search"
+        }
 EXIT_COMMANDS = {"good bye", "close", "exit", "stop", "g"}
 
 def parser(text: str):
     for func, kw in COMMANDS.items():
-        if text.startswith(kw):
+        if text == kw: 
+            return func, []
+        elif text.startswith(kw + " "): 
             return func, text[len(kw):].strip().split()
     return unknown_handler, []
 
