@@ -40,7 +40,7 @@ def help_handler():
     def inner(*args):
         nonlocal help_txt
         if not help_txt:
-            with open("help.txt") as file:            
+            with open("help.txt", encoding="utf-8") as file:
                 help_txt = "".join(file.readlines())
         return help_txt
     return inner
