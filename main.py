@@ -1,7 +1,9 @@
-from Address_book import AddressBook, Record, DuplicatedPhoneError
+from Address_book import AddressBook, Record, DuplicatedPhoneError, Note
 
 
 records = None
+note = Note()
+
 
 def input_error(*expected_args):
     def input_error_wrapper(func):
@@ -130,6 +132,23 @@ def search_handler(*args):
 def show_all_handler(*args):
     return records.iterator()
 
+@input_error("note text")
+def note_add_handler(*args):
+    note_text = " ".join(args)
+    note.add(note_text)
+    return "Note added."
+
+@input_error("search query")
+def note_search_handler(*args):
+    search_query = " ".join(args)
+    search_results = note.search(search_query)
+    if search_results:
+        return "\n".join(search_results)
+    return "No notes found."
+
+def note_show_handler(*args):
+    return str(note)
+
 COMMANDS = {
             help_handler(): "help",
             greeting_handler: "hello",
@@ -139,7 +158,10 @@ COMMANDS = {
             search_handler: "search",
             birthday_handler: "birthday",
             show_all_handler: "show all",
-            delete_handler: "delete"
+            delete_handler: "delete",
+            note_add_handler: "note",
+            note_show_handler: "note show",
+            note_search_handler: "search note"
             }
 EXIT_COMMANDS = {"good bye", "close", "exit", "stop", "g"}
 
@@ -150,9 +172,10 @@ def parser(text: str):
     return unknown_handler, []
 
 def main():
-    global records
+    global records, note
     with AddressBook("address_book.pkl") as book:
         records = book
+        note = Note()
         while True:
             user_input = input(">>> ").lower()
             if user_input in EXIT_COMMANDS:

@@ -166,3 +166,39 @@ class AddressBook(UserDict):
     def search_contacts(self, term):
         result = list(filter(lambda contact: term in contact.name.value.lower() or contact.has_phone(term), self.data.values()))
         return result
+class Note:
+    def __init__(self, filename='notes.pkl'):
+        self.filename = filename
+        self.notes = self.load_notes()
+
+    def add(self, note):
+        self.notes.append(note)
+        self.save()
+
+    def save(self):
+        with open(self.filename, 'wb') as f:
+            pickle.dump(self.notes, f)
+
+    def load_notes(self):
+        if os.path.exists(self.filename):
+            with open(self.filename, 'rb') as f:
+                try:
+                    return pickle.load(f)
+                except EOFError:
+                    return []
+        return []
+
+    def show(self):
+        if not self.notes:
+            print("No notes to show.")
+        else:
+            for index, note in enumerate(self.notes, start=1):
+                print(f"Note {index}: {note}")
+
+    def search(self, query):
+        matches = [note for note in self.notes if query.lower() in note.lower()]
+        if not matches:
+            print("No matches found.")
+        else:
+            for index, note in enumerate(matches, start=1):
+                print(f"Match {index}: {note}")
