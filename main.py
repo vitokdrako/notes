@@ -1,5 +1,5 @@
 from Address_book import AddressBook, Record, DuplicatedPhoneError, Note
-
+import shlex
 
 records = None
 note = Note()
@@ -132,6 +132,32 @@ def search_handler(*args):
 def show_all_handler(*args):
     return records.iterator()
 
+@capitalize_user_name    
+@input_error("name")        
+def address_handler(*args):
+    user_name = args[0]
+    user_address = args[1] if len(args) > 1 else None
+    record = records.find(user_name)
+    if record:
+        if user_address:
+            record.add_address(user_address)
+            return f"Address '{user_address}' for contact {user_name} added."
+        else:
+            return f"Address for contact {user_name}: {record.address}."
+
+@capitalize_user_name    
+@input_error("name")        
+def email_handler(*args):
+    user_name = args[0]
+    user_email = args[1] if len(args) > 1 else None
+    record = records.find(user_name)
+    if record:
+        if user_email:
+            record.add_email(user_email)
+            return f"Email '{user_email}' for contact {user_name} added."
+        else:
+            return f"Email for contact {user_name}: {record.email}."
+
 @input_error("note text")
 def note_add_handler(*args):
     note_text = " ".join(args)
@@ -153,6 +179,8 @@ COMMANDS = {
             help_handler(): "help",
             greeting_handler: "hello",
             add_handler: "add",
+            address_handler: "address",
+            email_handler: "email",
             change_handler: "change",
             phone_handler: "phone",
             search_handler: "search",
