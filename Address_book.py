@@ -240,11 +240,4 @@ class Note:
     def __str__(self):
         return "\n".join(self.notes)
     
-    def add_note_with_tags(self, text, tags):
-        note = Tag(text, tags)
-        self.notes.append(note)
-        self.save()
-
-    def search_by_tag(self, tag):
-        return [note for note in self.notes if isinstance(note, Tag) and note.has_tag(tag)]
     
