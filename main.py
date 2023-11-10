@@ -175,21 +175,6 @@ def note_search_handler(*args):
 def note_show_handler(*args):
     return str(note)
 
-@input_error("note text", "tags")
-def note_add_with_tags_handler(*args):
-    note_text = args[0]
-    tags = args[1:]
-    note.add_note_with_tags(note_text, tags)
-    return "Note with tags added."
-
-@input_error("tag")
-def note_search_by_tag_handler(*args):
-    tag = args[0]
-    matching_notes = note.search_by_tag(tag)
-    if matching_notes:
-        return "\n".join(str(note) for note in matching_notes)
-    return "No notes found with this tag."
-
 COMMANDS = {
             help_handler(): "help",
             greeting_handler: "hello",
@@ -204,10 +189,8 @@ COMMANDS = {
             delete_handler: "delete",
             note_add_handler: "note add", 
             note_show_handler: "note show",
-            note_search_handler: "note search",
-            note_add_with_tags_handler: "# add",
-            note_search_by_tag_handler: "#"
-
+            note_search_handler: "note search"
+            
         }
 EXIT_COMMANDS = {"good bye", "close", "exit", "stop", "g"}
 
