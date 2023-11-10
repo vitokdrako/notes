@@ -27,6 +27,28 @@ class Field:
 class Name(Field):
     ...
 
+class Address(Field):
+    ...
+
+class Email(Field):
+    def __init__(self, value: str) -> None:
+        self.value = value
+    
+    @property
+    def value(self):
+        return super().value
+
+    @value.setter
+    def value(self, value: str):
+        super()._set_value(self.__validate(value))
+
+    def __validate(self, value: str) -> str:
+        pattern = r'[a-zA-Z][a-zA-Z0-9_.]+@[a-z]+\.[a-z]{2,}'
+        if re.match(pattern, value):
+            return value
+        else:
+            raise ValueError(f"Email '{value}' is invalid. Check and try again")
+        
 
 class Phone(Field):
     def __init__(self, value: str) -> None:
@@ -77,13 +99,15 @@ class Birthday(Field):
 
 
 class Record:
-    def __init__(self, name: str, phone=None, birthday=None):
+    def __init__(self, name: str, phone=None, birthday=None, address=None, email=None):
         self.name = Name(name)
         self.phones = [Phone(phone)] if phone else []
-        self.birthday = Birthday(birthday) if birthday else "Not set"
+        self.birthday = Birthday(birthday) if birthday else "Birthday - not set"
+        self.address = Address(address) if address else "Address - not set"
+        self.email = Email(email) if email else "Email - not set"
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday}"
+        return f"Contact name: {self.name}, phones: {'; '.join(p.value for p in self.phones)}, email: {self.email}, birthday: {self.birthday}, address: {self.address}"
     
     def add_phone(self, phone: str): 
         existing_phone = self.find_phone(phone)
@@ -125,6 +149,12 @@ class Record:
     def has_phone(self, term: str) -> bool:
         phones = list(filter(lambda p: term in p.value, self.phones))
         return len(phones) > 0
+    
+    def add_address(self, address: str):
+        self.address = Address(address)
+
+    def add_email(self, email: str):
+        self.email = Email(email)
         
 
 class AddressBook(UserDict):
@@ -168,6 +198,8 @@ class AddressBook(UserDict):
     def search_contacts(self, term):
         result = list(filter(lambda contact: term in contact.name.value.lower() or contact.has_phone(term), self.data.values()))
         return result
+    
+    
 class Note:
     def __init__(self, filename='notes.pkl'):
         self.filename = filename
