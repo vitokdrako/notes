@@ -240,4 +240,15 @@ class Note:
     def __str__(self):
         return "\n".join(self.notes)
     
+    def add_note_with_tags(self, text):
+        self.notes.append(text)
+        self.save()
+
+    def search_by_tag(self, tag):
+        tag_pattern = re.compile(rf"\b#{re.escape(tag)}\b")
+        notes_with_count = [(note, len(tag_pattern.findall(note))) for note in self.notes]
+        notes_with_count.sort(key=lambda x: x[1], reverse=True)
+        return [note for note, count in notes_with_count if count > 0]
     
+   # https://docs.python.org/3/library/re.html компілювання re.compile
+   # https://proglib.io/p/samouchitel-po-python-dlya-nachinayushchih-chast-12-anonimnye-funkcii-2023-01-16 лямбда
